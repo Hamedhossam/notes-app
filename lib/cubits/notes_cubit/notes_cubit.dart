@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
@@ -22,11 +24,12 @@ class NotesCubit extends Cubit<NotesCubitState> {
         }
       }
       if (categoryName == "all") {
-        emit(NoteSuccessState(notes: allNotes));
+        emit(NoteSuccessState(notes: allNotes.reversed.toList()));
       } else {
-        emit(NoteSuccessState(notes: selectedNotes));
+        emit(NoteSuccessState(notes: selectedNotes.reversed.toList()));
       }
     } catch (e) {
+      log(e.toString());
       emit(NoteFailureState(errmessage: e.toString()));
     }
   }
