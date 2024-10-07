@@ -31,7 +31,6 @@ class NotesListView extends StatefulWidget {
 
 class _NotesListViewState extends State<NotesListView> {
   int selectedIndex = 0;
-  List<String> categories = ["all", "work", "meetings", "personal", "to-do"];
   @override
   void initState() {
     BlocProvider.of<NotesCubit>(context).getAllNotes(categoryName);
@@ -43,13 +42,13 @@ class _NotesListViewState extends State<NotesListView> {
     return SliverToBoxAdapter(
       child: Column(
         children: [
-          const CategoriesLabel(),
+          CategoriesLabel(),
           //* ====> Categories List View <====
           SizedBox(
             height: 75,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: 5,
+              itemCount: categories.length,
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
                   onTap: () => setState(() {

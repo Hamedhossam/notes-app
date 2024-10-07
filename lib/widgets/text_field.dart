@@ -6,13 +6,16 @@ class CustomizedTextField extends StatelessWidget {
     required this.tittle,
     required this.maxLines,
     this.onSaved,
+    this.onChanged,
   });
   final String tittle;
   final int maxLines;
   final void Function(String?)? onSaved;
+  final void Function(String)? onChanged;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onChanged: onChanged,
       onSaved: onSaved,
       validator: (value) {
         if (value?.isEmpty ?? true) {

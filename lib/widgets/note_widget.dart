@@ -7,6 +7,35 @@ class NoteWiget extends StatelessWidget {
     required this.noteModel,
   });
   final NoteModel noteModel;
+  void _showDeleteDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: const Text('⚠️ Do you want to delete?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                noteModel.delete();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Yes'),
+            ),
+          ],
+          backgroundColor: Colors.grey[850], // Dark background color
+          titleTextStyle: const TextStyle(color: Colors.white),
+          contentTextStyle: const TextStyle(color: Colors.white),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -32,25 +61,27 @@ class NoteWiget extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize: 20),
                   ),
-                  Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(129, 0, 0, 0),
-                        border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: const Icon(Icons.edit)),
+                  GestureDetector(
+                    onTap: () {
+                      _showDeleteDialog(context);
+                    },
+                    child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(129, 0, 0, 0),
+                          border: Border.all(color: Colors.white),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const Icon(Icons.delete)),
+                  ),
                 ],
               ),
-              subtitle: Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Text(
-                  noteModel.content,
-                  style: const TextStyle(
-                      color: Color.fromARGB(148, 0, 0, 0),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18),
-                ),
+              subtitle: Text(
+                noteModel.content,
+                style: const TextStyle(
+                    color: Color.fromARGB(165, 0, 0, 0),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
               ),
             ),
             Row(
@@ -59,7 +90,7 @@ class NoteWiget extends StatelessWidget {
                 Text(
                   noteModel.date,
                   style: const TextStyle(
-                      color: Color.fromARGB(148, 0, 0, 0),
+                      color: Color.fromARGB(118, 0, 0, 0),
                       fontWeight: FontWeight.bold,
                       fontSize: 18),
                 ),
