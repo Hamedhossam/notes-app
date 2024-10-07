@@ -31,16 +31,7 @@ class _CategoriesLabelState extends State<CategoriesLabel> {
               },
             ),
           ),
-          // content: const Padding(
-          //   padding: EdgeInsets.all(8.0),
-          //   child: Row(
-          //     children: [
-          //       Text("add category name",
-          //           style:
-          //               TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          //     ],
-          //   ),
-          // ),
+
           actions: <Widget>[
             TextButton(
               onPressed: () {

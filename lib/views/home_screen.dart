@@ -13,26 +13,23 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NotesCubit(),
-      child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            showModalBottomSheet(
-                isScrollControlled: true,
-                context: context,
-                builder: (context) {
-                  return AddNoteBottomSheet(selectedCategory: categoryName);
-                });
-          },
-          child: const Icon(Icons.add_rounded),
-        ),
-        body: const CustomScrollView(
-          slivers: [
-            CustomizedAppBar(),
-            NotesListView(),
-          ],
-        ),
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+              isScrollControlled: true,
+              context: context,
+              builder: (context) {
+                return AddNoteBottomSheet(selectedCategory: categoryName);
+              });
+        },
+        child: const Icon(Icons.add_rounded),
+      ),
+      body: const CustomScrollView(
+        slivers: [
+          CustomizedAppBar(),
+          NotesListView(),
+        ],
       ),
     );
   }

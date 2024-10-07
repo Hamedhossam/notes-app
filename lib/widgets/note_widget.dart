@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notes/constants.dart';
+import 'package:notes/cubits/notes_cubit/notes_cubit.dart';
 import 'package:notes/models/note_model.dart';
 
 class NoteWiget extends StatelessWidget {
@@ -23,6 +26,7 @@ class NoteWiget extends StatelessWidget {
             TextButton(
               onPressed: () {
                 noteModel.delete();
+                BlocProvider.of<NotesCubit>(context).getAllNotes(categoryName);
                 Navigator.of(context).pop();
               },
               child: const Text('Yes'),
