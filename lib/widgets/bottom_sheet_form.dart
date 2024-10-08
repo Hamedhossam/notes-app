@@ -45,6 +45,7 @@ class _BottomSheetFormState extends State<BottomSheetForm> {
           ),
           const SizedBox(height: 20),
           CustomizedButton(
+            tittle: "Add",
             onTap: () {
               if (formKey.currentState!.validate()) {
                 formKey.currentState!.save();

@@ -4,8 +4,10 @@ class CustomizedButton extends StatelessWidget {
   const CustomizedButton({
     super.key,
     this.onTap,
+    required this.tittle,
   });
   final void Function()? onTap;
+  final String tittle;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -17,10 +19,10 @@ class CustomizedButton extends StatelessWidget {
           color: Colors.blue,
           borderRadius: BorderRadius.circular(8),
         ),
-        child: const Center(
+        child: Center(
           child: Text(
-            'Add',
-            style: TextStyle(
+            tittle,
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 20,
               fontWeight: FontWeight.bold,

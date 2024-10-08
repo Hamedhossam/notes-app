@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes/constants.dart';
 import 'package:notes/cubits/notes_cubit/notes_cubit.dart';
 import 'package:notes/models/note_model.dart';
+import 'package:notes/screens/edit_note_screen.dart';
 
 class NoteWiget extends StatelessWidget {
   const NoteWiget({
@@ -43,7 +44,11 @@ class NoteWiget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return EditNoteScreen(noteModel: noteModel);
+        }));
+      },
       child: Container(
         padding: const EdgeInsets.all(8),
         margin: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),

@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 
 class CustomizedTextField extends StatelessWidget {
-  const CustomizedTextField({
+  CustomizedTextField({
     super.key,
     required this.tittle,
     required this.maxLines,
     this.onSaved,
     this.onChanged,
+    this.controller,
   });
   final String tittle;
   final int maxLines;
   final void Function(String?)? onSaved;
   final void Function(String)? onChanged;
+  TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       onChanged: onChanged,
       onSaved: onSaved,
       validator: (value) {
