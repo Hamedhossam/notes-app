@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:notes/constants.dart';
+import 'package:notes/cubits/notes_cubit/notes_cubit.dart';
 import 'package:notes/widgets/text_field.dart';
 
 class CategoriesLabel extends StatefulWidget {
@@ -13,8 +16,28 @@ class CategoriesLabel extends StatefulWidget {
 
 class _CategoriesLabelState extends State<CategoriesLabel> {
   String? categoryAdded;
-
   GlobalKey<FormState> formKey = GlobalKey();
+  late Box<List<String>> box;
+
+  @override
+  void initState() {
+    super.initState();
+    openBox();
+  }
+
+  Future<void> openBox() async {
+    box = await Hive.openBox<List<String>>('categories');
+  }
+
+  void addString(String value) {
+    List<String> currentList = box.get('categories', defaultValue: []) ?? [];
+    currentList.add(value);
+    box.put('categories', currentList);
+  }
+
+  List<String> getStrings() {
+    return box.get('categories', defaultValue: []) ?? [];
+  }
 
   void _showDeleteDialog(BuildContext context) {
     showDialog(
@@ -36,7 +59,9 @@ class _CategoriesLabelState extends State<CategoriesLabel> {
             TextButton(
               onPressed: () {
                 if (formKey.currentState!.validate()) {
-                  categories.add(categoryAdded!);
+                  addString(categoryAdded!);
+                  BlocProvider.of<NotesCubit>(context)
+                      .getAllNotes(categoryName);
                   Navigator.of(context).pop();
                 }
               },

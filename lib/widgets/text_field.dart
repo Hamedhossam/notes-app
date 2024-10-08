@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomizedTextField extends StatelessWidget {
-  CustomizedTextField({
+  const CustomizedTextField({
     super.key,
     required this.tittle,
     required this.maxLines,
@@ -13,7 +13,7 @@ class CustomizedTextField extends StatelessWidget {
   final int maxLines;
   final void Function(String?)? onSaved;
   final void Function(String)? onChanged;
-  TextEditingController? controller;
+  final TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
     return TextFormField(

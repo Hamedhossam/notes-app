@@ -42,46 +42,54 @@ class _NotesListViewState extends State<NotesListView> {
     return SliverToBoxAdapter(
       child: Column(
         children: [
-          CategoriesLabel(),
+          const CategoriesLabel(),
           //* ====> Categories List View <====
-          SizedBox(
-            height: 75,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: categories.length,
-              itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  onTap: () => setState(() {
-                    categoryName = categories[index];
-                    selectedIndex = index;
-                    BlocProvider.of<NotesCubit>(context)
-                        .getAllNotes(categoryName);
-                  }),
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
-                    decoration: BoxDecoration(
-                      color: (selectedIndex == index)
-                          ? const Color(0xffFFD246)
-                          : const Color(0xff181818),
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      categories[index],
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: (selectedIndex == index)
-                            ? Colors.black
-                            : Colors.white,
+          BlocBuilder<NotesCubit, NotesCubitState>(builder: (context, state) {
+            if (state is NoteSuccessState) {
+              return SizedBox(
+                height: 75,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: categories!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () => setState(() {
+                        categoryName = categories![index];
+                        selectedIndex = index;
+                        BlocProvider.of<NotesCubit>(context)
+                            .getAllNotes(categoryName);
+                      }),
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 14, horizontal: 8),
+                        decoration: BoxDecoration(
+                          color: (selectedIndex == index)
+                              ? const Color(0xffFFD246)
+                              : const Color(0xff181818),
+                          border: Border.all(color: Colors.white),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          categories![index],
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: (selectedIndex == index)
+                                ? Colors.black
+                                : Colors.white,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
+                    );
+                  },
+                ),
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          }),
           const NotesLabel(),
           //*====> Notes List View <====
           BlocBuilder<NotesCubit, NotesCubitState>(
