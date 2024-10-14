@@ -27,6 +27,7 @@ class AddNoteBottomSheet extends StatelessWidget {
           listener: (BuildContext context, AddNoteCubitState state) async {
             if (state is AddNoteSuccessState) {
               await Future.delayed(const Duration(seconds: 1));
+              // ignore: use_build_context_synchronously
               BlocProvider.of<NotesCubit>(context).getAllNotes(categoryName);
               // ignore: use_build_context_synchronously
               Navigator.pop(context);

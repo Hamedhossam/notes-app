@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes/constants.dart';
+import 'package:notes/cubits/categories_cubit/categories_cubit.dart';
 import 'package:notes/cubits/notes_cubit/notes_cubit.dart';
 import 'package:notes/widgets/labels/categories_label.dart';
 import 'package:notes/widgets/labels/nots_labed.dart';
@@ -34,27 +35,32 @@ class _NotesListViewState extends State<NotesListView> {
   @override
   void initState() {
     BlocProvider.of<NotesCubit>(context).getAllNotes(categoryName);
+    BlocProvider.of<CategoriesCubit>(context).getCategories();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
-      child: Column(
-        children: [
-          const CategoriesLabel(),
-          //* ====> Categories List View <====
-          BlocBuilder<NotesCubit, NotesCubitState>(builder: (context, state) {
-            if (state is NoteSuccessState) {
+        child: Column(
+      children: [
+        const CategoriesLabel(),
+        //* ====> Categories List View <====
+        BlocBuilder<CategoriesCubit, CategoriesState>(
+          builder: (context, state) {
+            if (state is CategoriesSuccess) {
               return SizedBox(
                 height: 75,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: categories!.length,
+                  itemCount: BlocProvider.of<CategoriesCubit>(context)
+                      .categories
+                      .length,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: () => setState(() {
-                        categoryName = categories![index];
+                        categoryName = BlocProvider.of<CategoriesCubit>(context)
+                            .categories[index];
                         selectedIndex = index;
                         BlocProvider.of<NotesCubit>(context)
                             .getAllNotes(categoryName);
@@ -71,7 +77,8 @@ class _NotesListViewState extends State<NotesListView> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
-                          categories![index],
+                          BlocProvider.of<CategoriesCubit>(context)
+                              .categories[index],
                           style: TextStyle(
                             fontSize: 18,
                             color: (selectedIndex == index)
@@ -86,37 +93,37 @@ class _NotesListViewState extends State<NotesListView> {
               );
             } else {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: Text("no sections added"),
               );
             }
-          }),
-          const NotesLabel(),
-          //*====> Notes List View <====
-          BlocBuilder<NotesCubit, NotesCubitState>(
-            builder: (context, state) {
-              if (state is NoteSuccessState) {
-                return SizedBox(
-                  height: 620,
-                  child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    itemCount: state.notes.isEmpty ? 0 : state.notes.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return NoteWiget(noteModel: state.notes[index]);
-                    },
-                  ),
-                );
-              } else if (state is NoteFailureState) {
-                return const Center(
-                    child: CircularProgressIndicator(
-                  color: Colors.red,
-                ));
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            },
-          ),
-        ],
-      ),
-    );
+          },
+        ),
+        const NotesLabel(),
+        //*====> Notes List View <====
+        BlocBuilder<NotesCubit, NotesCubitState>(
+          builder: (context, state) {
+            if (state is NoteSuccessState) {
+              return SizedBox(
+                height: 620,
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: state.notes.isEmpty ? 0 : state.notes.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return NoteWiget(noteModel: state.notes[index]);
+                  },
+                ),
+              );
+            } else if (state is NoteFailureState) {
+              return const Center(
+                  child: CircularProgressIndicator(
+                color: Colors.red,
+              ));
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
+      ],
+    ));
   }
 }

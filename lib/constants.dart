@@ -1,2 +1,2 @@
 String categoryName = "all";
-List<String>? categories;
+// List<String>? categories;

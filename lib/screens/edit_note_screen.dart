@@ -29,15 +29,24 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
     return Scaffold(
       body: ListView(
         children: [
-          const SizedBox(
+          SizedBox(
             height: 70,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.edit),
-                Text("Edit Notes",
+                GestureDetector(
+                  child: const Icon(Icons.arrow_back_ios_new),
+                  onTap: () => Navigator.pop(context),
+                ),
+                const Spacer(
+                  flex: 2,
+                ),
+                const Icon(Icons.edit),
+                const Text("Edit Notes",
                     style:
                         TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                const Spacer(
+                  flex: 2,
+                ),
               ],
             ),
           ),
